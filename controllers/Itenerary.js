@@ -11,14 +11,16 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const generateItineraryController = async (req, res) => {
   try {
-    const { userId, source, destination, start_date, end_date, budget } =
+    const { userId, source, destination, startDate, returnDate, budget } =
       req.body;
 
-    const startDate = new Date(start_date);
-    const endDate = new Date(end_date);
-    const no_of_day = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+    const start_date = new Date(startDate);
+    const return_date = new Date(returnDate);
+    const no_of_day = Math.ceil(
+      (return_date - start_date) / (1000 * 60 * 60 * 24)
+    );
 
-    const prompt = `Generate a personalized trip itinerary for a ${no_of_day}-day trip from ${source} to ${destination} from ${start_date} to ${end_date}, with an optimum budget of ${budget} INR.`;
+    const prompt = `Generate a personalized trip itinerary for a ${no_of_day}-day trip from ${source} to ${destination} from ${startDate} to ${returnDate}, with an optimum budget of ${budget} INR.`;
 
     const result = await model.generateContent(prompt);
     const itineraryText = result.response.text();
