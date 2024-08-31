@@ -54,4 +54,46 @@ const generateItineraryController = async (req, res) => {
   }
 };
 
-export { generateItineraryController };
+const getUserItineraries = async (req, res) => {
+  try {
+    const userId = req.query.userId;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(userId).populate("itineraries");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ itineraries: user.itineraries });
+  } catch (error) {
+    console.error("Error fetching itineraries:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const getItineraryById = async (req, res) => {
+  try {
+    const itineraryId = req.query.itineraryId;
+
+    if (!itineraryId) {
+      return res.status(400).json({ message: "Itinerary ID is required" });
+    }
+
+    const itinerary = await Itinerary.findById(itineraryId);
+
+    if (!itinerary) {
+      return res.status(404).json({ message: "Itinerary not found" });
+    }
+
+    res.status(200).json({ itinerary });
+  } catch (error) {
+    console.error("Error fetching itinerary:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export { generateItineraryController, getUserItineraries, getItineraryById };
