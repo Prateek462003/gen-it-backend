@@ -10,6 +10,6 @@ const router = express.Router();
 // Itenerary Routes
 router.post("/generateItenerary", verifyToken, generateItineraryController);
 router.get("/getItinerariesByUser", verifyToken, getUserItineraries);
-router.get("/getItineraryById", verifyToken, getItineraryById);
+router.get("/getItineraryById", getItineraryById);
 
 export default router;
